@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Others/1.png</file>
+        <file>Others/2.png</file>
+        <file>Others/3.png</file>
+        <file>Others/4.png</file>
+        <file>Others/5.png</file>
+        <file>Others/6.png</file>
+        <file>Others/7.png</file>
+        <file>Others/8.png</file>
+        <file>Others/9.png</file>
+        <file>Others/10.png</file>
+        <file>Others/11.png</file>
+        <file>Others/12.png</file>
+        <file>Others/A.png</file>
+        <file>Others/B.png</file>
+        <file>Others/black.png</file>
+        <file>Others/C.png</file>
+        <file>Others/corner.png</file>
+        <file>Others/D.png</file>
+        <file>Others/E.png</file>
+        <file>Others/empty.png</file>
+        <file>Others/F.png</file>
+        <file>Others/G.png</file>
+        <file>Others/H.png</file>
+        <file>Others/I.png</file>
+        <file>Others/J.png</file>
+        <file>Others/K.png</file>
+        <file>Others/L.png</file>
+        <file>Others/white.png</file>
+    </qresource>
+</RCC>
