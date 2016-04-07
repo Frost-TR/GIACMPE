@@ -9,8 +9,7 @@ GameWindow::GameWindow(GameData *Gameparam,QMainWindow *parent)
 
     Spacer = new QLabel(this);
     Spacer->setGeometry(QRect(QPoint(800,0),QSize(10,800)));
-    QPixmap pixelmap(":/Images/Others/spacer.png");
-    Spacer->setPixmap(pixelmap);
+    Spacer->setPixmap(this->GetImage(0,8));
 
     Player1Frame = new QFrame(this);
     Player1Frame->setGeometry(QRect(QPoint(830,20),QSize(260,200)));
@@ -26,23 +25,44 @@ GameWindow::GameWindow(GameData *Gameparam,QMainWindow *parent)
     QuitSaveButtonsFrame->setGeometry(QRect(QPoint(830,670),QSize(260,100)));
     QuitSaveButtonsFrame->setStyleSheet("background-image: url(:/Images/Others/buttons.png)");
 
+    QFont font;
+    font.setPointSize(12);
+    InfoLabel = new QLabel(this);
+    InfoLabel->setGeometry(QRect(QPoint(200,750),QSize(400,30)));
+    InfoLabel->setAlignment(Qt::AlignCenter);
+    InfoLabel->setStyleSheet("color: red");
+    InfoLabel->setFont(font);
+
     Player1Name = new QLabel(this);
     Player1Name->setText("tetetet");
     Player1Name->setGeometry(QRect(QPoint(860,50),QSize(200,50)));
     Player1Name->setAlignment(Qt::AlignCenter);
+    Player1Name->setFont(font);
 
     Player2Name = new QLabel(this);
     Player2Name->setText("tetetet2");
     Player2Name->setGeometry(QRect(QPoint(860,300),QSize(200,50)));
     Player2Name->setAlignment(Qt::AlignCenter);
+    Player2Name->setFont(font);
+
+    Player1Color = new QLabel(this);
+    Player1Color->setGeometry(QRect(QPoint(935,140),QSize(50,50)));
+    Player1Color->setPixmap(this->GetImage(0,9));
+
+    Player2Color = new QLabel(this);
+    Player2Color->setGeometry(QRect(QPoint(935,390),QSize(50,50)));
+    Player2Color->setPixmap(this->GetImage(0,10));
 
     Player1Score = new QLabel(this);
-    Player1Score->setGeometry(QRect(QPoint(935,150),QSize(50,50)));
+    Player1Score->setGeometry(QRect(QPoint(935,140),QSize(50,50)));
     Player1Score->setAlignment(Qt::AlignCenter);
+    Player1Score->setFont(font);
 
     Player2Score = new QLabel(this);
-    Player2Score->setGeometry(QRect(QPoint(935,350),QSize(50,50)));
+    Player2Score->setGeometry(QRect(QPoint(935,390),QSize(50,50)));
     Player2Score->setAlignment(Qt::AlignCenter);
+    Player2Score->setFont(font);
+    Player2Score->setStyleSheet("color: white");
 
     UndoButton = new QPushButton(this);
     UndoButton->setText("Undo");
@@ -65,7 +85,7 @@ GameWindow::GameWindow(GameData *Gameparam,QMainWindow *parent)
     QObject::connect(SaveButton,SIGNAL(clicked(bool)),this,SLOT(SaveButtonEvent()));
     QObject::connect(QuitButton,SIGNAL(clicked(bool)),this,SLOT(QuitButtonEvent()));
 
-
+    QPixmap pixelmap;
     pixelmap = GetImage(0,6);
     white.addPixmap(pixelmap);
     pixelmap = GetImage(0,5);
@@ -91,7 +111,6 @@ void GameWindow::SaveButtonEvent(){
 void GameWindow::UndoButtonEvent(){
     if(GameDat->Game.actual>0){
         GameDat->Game.actual--;
-        this->SwitchActivePlayer();
         this->SwitchActivePlayerFrame();
         this->UpdateScore();
         this->RenderGrid();
@@ -105,7 +124,6 @@ void GameWindow::UndoButtonEvent(){
 void GameWindow::RedoButtonEvent(){
     if(GameDat->Game.actual<GameDat->Game.last){
         GameDat->Game.actual++;
-        this->SwitchActivePlayer();
         this->SwitchActivePlayerFrame();
         this->UpdateScore();
         this->RenderGrid();
@@ -230,12 +248,11 @@ void GameWindow::TestChange(){
             {
                  testlabel->setText(QString::number(i)+"  sloupec   "+ QString::number(j)+" radek ");
                  GameLogic *Logic = new GameLogic();
-                 GameDat = Logic->SolveTah(GameDat,i,j);
+                 GameDat = Logic->SolveMove(GameDat,i,j);
                  this->SwitchActivePlayer();
                  this->SwitchActivePlayerFrame();
                  this->UpdateScore();
                  this->RenderGrid();
-
             }
         }
     }
@@ -270,6 +287,15 @@ QPixmap GameWindow::GetImage(int index,int identyfi){
         break;
     case 4:
         file = pathToFiles + "corner.png";
+        break;
+    case 8:
+        file = pathToFiles + "spacer.png";
+        break;
+    case 9:
+        file = pathToFiles + "colorWhite.png";
+        break;
+    case 10:
+        file = pathToFiles + "colorBlack.png";
         break;
     }
     QPixmap image(file);

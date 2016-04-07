@@ -8,7 +8,8 @@ class GameLogic
 {
 public:
     GameLogic();
-    GameData* SolveTah(GameData *GameDat,int i, int j);
+    GameData* SolveMove(GameData *GameDat,int i, int j);
+    bool CanMove(GameData *GameDat);
 };
 
 #endif // GAMELOGIC_H

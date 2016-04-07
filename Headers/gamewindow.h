@@ -53,6 +53,7 @@ private:
     QLabel *Player1Name;
     QLabel *Player1Score;
     QLabel *Player1Color;
+    QLabel *InfoLabel;
 
     QLabel *Player2Name;
     QLabel *Player2Score;

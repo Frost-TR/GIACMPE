@@ -6,10 +6,14 @@ GameLogic::GameLogic()
 }
 
 
-GameData * GameLogic::SolveTah(GameData *GameDat, int i, int j){
+GameData * GameLogic::SolveMove(GameData *GameDat, int i, int j){
     GameDat->Game.History[GameDat->Game.actual+1]= GameDat->Game.History[GameDat->Game.actual];
-    GameDat->Game.actual++;
-    GameDat->Game.last++;
+    if(GameDat->Game.actual==GameDat->Game.last){
+        GameDat->Game.actual++;
+        GameDat->Game.last++;
+    }else{
+        GameDat->Game.actual++;
+    }
     if(GameDat->Game.History[GameDat->Game.actual].ActivePlayer==0){
         GameDat->Game.History[GameDat->Game.actual].Player1Score++;
         GameDat->Game.History[GameDat->Game.actual].grid[i][j]=1;
@@ -20,3 +24,8 @@ GameData * GameLogic::SolveTah(GameData *GameDat, int i, int j){
 
     return GameDat;
 }
+
+bool GameLogic::CanMove(GameData *GameDat){
+
+}
+
