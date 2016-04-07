@@ -6,34 +6,65 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QString>
+#include <QFrame>
+
+#include "./Headers/gamedata.h"
+#include "./Headers/gamelogic.h"
+#include "./Headers/gameinteligence.h"
 
 class GameWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    GameWindow(int Size,QMainWindow *parent = 0);
+    GameWindow(GameData *GameParam,QMainWindow *parent = 0);
     ~GameWindow();
-    void CreateGameGrid(int size);
-    void CreateGameHints(int size);
-    void CreateCorners(int size);
+    void CreateGameGrid();
+    void CreateGameHints();
+    void CreateCorners();
     QPixmap GetImage(int index,int line);
+    void RenderGrid();
+    void UpdateScore();
+    void InitGame();
+    void SwitchActivePlayer();
+    void SwitchActivePlayerFrame();
 
 private slots:
     void TestChange();
+    void QuitButtonEvent();
+    void SaveButtonEvent();
+    void UndoButtonEvent();
+    void RedoButtonEvent();
 
 private:
     QLabel *testlabel;
     QPushButton *GameGridButton[12][12];
+    QPushButton *UndoButton;
+    QPushButton *RedoButton;
+    QPushButton *QuitButton;
+    QPushButton *SaveButton;
 
     QLabel *GameBottonLabel[12];
     QLabel *GameCornerLabel[4];
     QLabel *GameLeftLabel[12];
     QLabel *GameRightLabel[12];
     QLabel *GameTopLabel[12];
+    QLabel *Spacer;
+    QLabel *Player1Name;
+    QLabel *Player1Score;
+    QLabel *Player1Color;
 
-    int arraySize;
+    QLabel *Player2Name;
+    QLabel *Player2Score;
+    QLabel *Player2Color;
+
+    QFrame *Player1Frame;
+    QFrame *Player2Frame;
+    QFrame *HistoryButtonsFrame;
+    QFrame *QuitSaveButtonsFrame;
+
     QString pathToFiles = ":/Images/Others/";
+    GameData *GameDat;
 
     QIcon white;
     QIcon black;

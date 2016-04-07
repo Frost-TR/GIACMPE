@@ -48,9 +48,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.0409609"
-     inkscape:cx="348.51604"
-     inkscape:cy="612.41965"
+     inkscape:zoom="1.2478695"
+     inkscape:cx="279.03209"
+     inkscape:cy="266.15379"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -667,8 +667,68 @@
          y="415.94284">12</tspan></text>
     <path
        style="fill:#ccff00;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 416.96896,431.88813 0,-400.000022 2.5,0 2.5,0 0,400.000022 0,399.99998 -2.5,0 -2.5,0 0,-399.99998 z"
+       d="m 416.96896,431.88813 0,-400.000022 5,0 5,0 0,400.000022 0,399.99998 -5,0 -5,0 0,-399.99998 z"
        id="path5665"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="C:\Users\rysto\Documents\ICP\Others\spacer.png" />
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke:#ccff00;stroke-width:8.7675581;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4216-0"
+       width="251.23244"
+       height="191.23244"
+       x="14.622797"
+       y="632.54224"
+       inkscape:export-filename="C:\Users\rysto\Documents\ICP\Others\inactive.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4216-9"
+       width="250"
+       height="250"
+       x="4.8212628"
+       y="841.61609" />
+    <rect
+       style="fill:#ccff00;fill-opacity:1;stroke:#ccff00;stroke-width:8.7675581;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4216-0-9"
+       width="251.23244"
+       height="191.23244"
+       x="492.23682"
+       y="554.00842"
+       inkscape:export-filename="C:\Users\rysto\Documents\ICP\Others\active.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#ccff00;fill-opacity:1;stroke:#ccff00;stroke-width:6.17295313;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4216-0-9-9"
+       width="253.82704"
+       height="93.827049"
+       x="490.93951"
+       y="782.98431"
+       inkscape:export-filename="C:\Users\rysto\Documents\ICP\Others\buttons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:transform-center-x="67.20028"
+       inkscape:transform-center-y="18.872902" />
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4321"
+       cx="165.23901"
+       cy="968.06116"
+       r="25"
+       inkscape:export-filename="C:\Users\rysto\Documents\ICP\Others\colorBlack.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4321-1"
+       cx="242.81384"
+       cy="967.41742"
+       r="25"
+       inkscape:export-filename="C:\Users\rysto\Documents\ICP\Others\colorWhite.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

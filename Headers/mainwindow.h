@@ -10,6 +10,7 @@
 #include <QLineEdit>
 
 #include "./Headers/gamewindow.h"
+#include "./Headers/gamedata.h"
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +28,7 @@ private slots:
     void setLayoutToMenu();
     void SetLayoutForOpponent();
     void showGameWindow();
+    GameData *createNewGame();
 
 private:
     QPushButton *NewGameButton;

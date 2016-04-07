@@ -28,5 +28,11 @@
         <file>Others/K.png</file>
         <file>Others/L.png</file>
         <file>Others/white.png</file>
+        <file>Others/spacer.png</file>
+        <file>Others/active.png</file>
+        <file>Others/inactive.png</file>
+        <file>Others/buttons.png</file>
+        <file>Others/colorBlack.png</file>
+        <file>Others/colorWhite.png</file>
     </qresource>
 </RCC>

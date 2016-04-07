@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     MenuLabel = new QLabel("MenuLabel",this);
     MenuLabel->setText("Hra 2016 - Reversi");
     MenuLabel->setFont(font);
+    MenuLabel->setAlignment(Qt::AlignCenter);
     MenuLabel->setGeometry(QRect(QPoint(100,50),QSize(300,70)));
 
     NewGameLabel = new QLabel("NewGameLabel",this);
@@ -147,24 +148,58 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::showGameWindow(){
-    int size = 0;
+    NewGameWindow = new GameWindow(this->createNewGame());
+    NewGameWindow->setFixedSize(1100,800);
+    NewGameWindow->show();
+    this->setLayoutToMenu();
+}
+
+
+GameData* MainWindow::createNewGame(){
+    GameData *newGame = new GameData();
     switch(BoardSizeComboBox->currentIndex()){
     case 0:
-        size = 6;
+        newGame->Game.gridSize=6;
         break;
     case 1:
-        size = 8;
+        newGame->Game.gridSize=8;
         break;
     case 2:
-        size = 10;
+        newGame->Game.gridSize=10;
         break;
     case 3:
-        size = 12;
+        newGame->Game.gridSize=12;
         break;
     }
-    NewGameWindow = new GameWindow(size);
-    NewGameWindow->setFixedSize(1200,800);
-    NewGameWindow->show();
+    newGame->Game.Player1Name = new QString(PlayerNameEdit->text());
+    if(AIRadioButton->isChecked()){
+    newGame->Game.OpponentIsHuman = false;
+    newGame->Game.Player2Name = new QString("Artificial Inteligence");
+    newGame->Game.AIlevel = OpponentDifficultComboBox->currentIndex();
+    }else{
+    newGame->Game.OpponentIsHuman = true;
+    newGame->Game.Player2Name= new QString(PlayerNameEdit2->text());
+    }
+    newGame->Game.actual=0;
+    newGame->Game.last=0;
+    newGame->Game.History[0].ActivePlayer=0;
+    newGame->Game.History[0].Player1Score=2;
+    newGame->Game.History[0].Player2Score=2;
+
+    for(int i=0;i<newGame->Game.gridSize;i++){
+        for(int j=0;j<newGame->Game.gridSize;j++){
+            newGame->Game.History[0].grid[i][j]=0;
+        }
+    }
+    int halfsize=newGame->Game.gridSize/2;
+
+    newGame->Game.History[0].grid[halfsize-1][halfsize-1]=1;
+    newGame->Game.History[0].grid[halfsize][halfsize]=1;
+
+    newGame->Game.History[0].grid[halfsize-1][halfsize]=2;
+    newGame->Game.History[0].grid[halfsize][halfsize-1]=2;
+    return newGame;
+
 }
 
 void MainWindow::SetLayoutForOpponent(){
@@ -205,6 +240,7 @@ void MainWindow::SetLayoutToNewGame(){
 
     HumanRadioButton->setChecked(false);
     AIRadioButton->setChecked(true);
+
     this->SetLayoutForOpponent();
 }
 
@@ -250,8 +286,12 @@ void MainWindow::setLayoutToMenu(){
         AIRadioButton->setVisible(false);
         PlayerNameLabel->setVisible(false);
         PlayerNameEdit->setVisible(false);
+        PlayerNameLabel2->setVisible(false);
+        PlayerNameEdit2->setVisible(false);
         OpponentDifficultLabel->setVisible(false);
         OpponentDifficultComboBox->setVisible(false);
+        PlayerNameEdit->setText("");
+        PlayerNameEdit2->setText("");
 
         actualLayout=0;
         break;
