@@ -249,7 +249,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
         }
     }
     if((i<size-2) and (j>1)){
-        if(Grid[i+1][j+1]==find){
+        if(Grid[i+1][j-1]==find){
             Grid[i+1][j-1]=end;
             tmpj=j-2;
             tmpi=i+2;
