@@ -4,3 +4,8 @@ GameInteligence::GameInteligence()
 {
 
 }
+
+GameData *GameInteligence::SwitchInteligence(GameData *GameDat)
+{
+
+}

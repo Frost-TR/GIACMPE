@@ -28,13 +28,15 @@ public:
     void InitGame();
     void SwitchActivePlayer();
     void SwitchActivePlayerFrame();
+    void DissableButtonGrid();
 
 private slots:
-    void TestChange();
+    void ButtonGridEvent();
     void QuitButtonEvent();
     void SaveButtonEvent();
     void UndoButtonEvent();
     void RedoButtonEvent();
+
 
 private:
     QLabel *testlabel;

@@ -159,16 +159,16 @@ GameData* MainWindow::createNewGame(){
     GameData *newGame = new GameData();
     switch(BoardSizeComboBox->currentIndex()){
     case 0:
-        newGame->Game.gridSize=6;
+        newGame->Game.GridSize=6;
         break;
     case 1:
-        newGame->Game.gridSize=8;
+        newGame->Game.GridSize=8;
         break;
     case 2:
-        newGame->Game.gridSize=10;
+        newGame->Game.GridSize=10;
         break;
     case 3:
-        newGame->Game.gridSize=12;
+        newGame->Game.GridSize=12;
         break;
     }
     newGame->Game.Player1Name = new QString(PlayerNameEdit->text());
@@ -180,24 +180,25 @@ GameData* MainWindow::createNewGame(){
     newGame->Game.OpponentIsHuman = true;
     newGame->Game.Player2Name= new QString(PlayerNameEdit2->text());
     }
-    newGame->Game.actual=0;
-    newGame->Game.last=0;
-    newGame->Game.History[0].ActivePlayer=0;
-    newGame->Game.History[0].Player1Score=2;
-    newGame->Game.History[0].Player2Score=2;
+    newGame->Game.Actual=0;
+    newGame->Game.Last=0;
+    newGame->Game.ActivePlayer=0;
+    newGame->Game.Player1Score=2;
+    newGame->Game.Player2Score=2;
 
-    for(int i=0;i<newGame->Game.gridSize;i++){
-        for(int j=0;j<newGame->Game.gridSize;j++){
-            newGame->Game.History[0].grid[i][j]=0;
+    for(int i=0;i<newGame->Game.GridSize;i++){
+        for(int j=0;j<newGame->Game.GridSize;j++){
+            newGame->Game.History[0].Grid[i][j]=0;
         }
     }
-    int halfsize=newGame->Game.gridSize/2;
+    int halfsize=newGame->Game.GridSize/2;
 
-    newGame->Game.History[0].grid[halfsize-1][halfsize-1]=1;
-    newGame->Game.History[0].grid[halfsize][halfsize]=1;
+    newGame->Game.History[0].Grid[halfsize-1][halfsize-1]=1;
+    newGame->Game.History[0].Grid[halfsize][halfsize]=1;
 
-    newGame->Game.History[0].grid[halfsize-1][halfsize]=2;
-    newGame->Game.History[0].grid[halfsize][halfsize-1]=2;
+    newGame->Game.History[0].Grid[halfsize-1][halfsize]=2;
+    newGame->Game.History[0].Grid[halfsize][halfsize-1]=2;
+    newGame->Game.RemainingStones=(newGame->Game.GridSize*newGame->Game.GridSize)-4;
     return newGame;
 
 }
