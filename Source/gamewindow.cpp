@@ -92,11 +92,11 @@ GameWindow::GameWindow(GameData *Gameparam,QMainWindow *parent)
 
     QPixmap pixelmap;
     pixelmap = GetImage(0,6);
-    white.addPixmap(pixelmap,QIcon::Disabled);
+    white.addPixmap(pixelmap);
     pixelmap = GetImage(0,5);
-    empty.addPixmap(pixelmap,QIcon::Disabled);
+    empty.addPixmap(pixelmap);
     pixelmap = GetImage(0,7);
-    black.addPixmap(pixelmap,QIcon::Disabled);
+    black.addPixmap(pixelmap);
     this->InitGame();
 }
 
