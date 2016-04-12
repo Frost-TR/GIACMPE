@@ -205,7 +205,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
                         Grid[tmpi][tmpj]=end;
                     }
                 }
-                tmpj--;
+                tmpj++;
                 tmpi++;
             }
         }
@@ -418,7 +418,7 @@ bool GameLogic::SolveMove(int Grid[12][12], int i, int j,int size,int player)
                         break;
                     }
                 }
-                tmpj--;
+                tmpj++;
                 tmpi++;
             }
         }
