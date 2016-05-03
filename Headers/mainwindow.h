@@ -28,6 +28,8 @@ private slots:
     void setLayoutToMenu();
     void SetLayoutForOpponent();
     void showGameWindow();
+    void GetFileName();
+    void LoadGame();
     GameData *createNewGame();
 
 private:
@@ -38,21 +40,29 @@ private:
     QPushButton *PlayGameButton;
     QPushButton *LoadButton;
     QPushButton *BackButton;
-    QPushButton *DeleteGameButton;
+    QPushButton *ChooseGameButton;
 
     QLabel *MenuLabel;
     QLabel *NewGameLabel;
+    QLabel *LoadGameLabel;
     QLabel *BoardSizeLabel;
     QLabel *OpponentLabel;
     QLabel *OpponentDifficultLabel;
     QLabel *PlayerNameLabel;
     QLabel *PlayerNameLabel2;
+    QLabel *NewGameInfoLabel;
+    QLabel *LoadGameInfoLabel;
+    QLabel *AuthorsLabel;
+    QLabel *Author1NameLabel;
+    QLabel *Author2NameLabel;
+    QLabel *DescriptionLabel;
 
     QRadioButton *HumanRadioButton;
     QRadioButton *AIRadioButton;
 
     QLineEdit *PlayerNameEdit;
     QLineEdit *PlayerNameEdit2;
+    QLineEdit *LoadFileEdit;
 
     QComboBox *BoardSizeComboBox;
     QComboBox *OpponentDifficultComboBox;

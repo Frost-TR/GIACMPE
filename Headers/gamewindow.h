@@ -7,6 +7,10 @@
 #include <QPushButton>
 #include <QString>
 #include <QFrame>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QThread>
 
 #include "./Headers/gamedata.h"
 #include "./Headers/gamelogic.h"
@@ -29,6 +33,7 @@ public:
     void SwitchActivePlayer();
     void SwitchActivePlayerFrame();
     void DissableButtonGrid();
+    void SaveGameToFile();
 
 private slots:
     void ButtonGridEvent();
@@ -72,6 +77,8 @@ private:
     QIcon white;
     QIcon black;
     QIcon empty;
+    bool isSaved;
+    bool DisableGrid[12][12];
 
 };
 #endif // GAMEWINDOW_H

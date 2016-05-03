@@ -25,7 +25,7 @@ public:
         QString *Player2Name;
         bool OpponentIsHuman;
         int AIlevel; // 0 very stupid 1 stupid
-        struct gameHistoryList History[100];
+        struct gameHistoryList History[200];
     };
 
     struct GameInfo Game;

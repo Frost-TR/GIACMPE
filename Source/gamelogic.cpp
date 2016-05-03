@@ -2,18 +2,15 @@
 
 GameLogic::GameLogic()
 {
-
 }
 
 
 GameData * GameLogic::Move(GameData *GameDat, int i, int j){
     GameDat->Game.History[GameDat->Game.Actual+1]= GameDat->Game.History[GameDat->Game.Actual];
-    if(GameDat->Game.Actual==GameDat->Game.Last){
-        GameDat->Game.Actual++;
-        GameDat->Game.Last++;
-    }else{
-        GameDat->Game.Actual++;
-    }
+
+    GameDat->Game.Actual++;
+    GameDat->Game.Last=GameDat->Game.Actual;
+
 
     if(GameDat->Game.ActivePlayer==0){
         GameDat->Game.History[GameDat->Game.Actual].Grid[i][j]=1;
@@ -27,6 +24,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
     int tmpi=i;
     int tmpj=j;
     int Grid[12][12];
+
     for(int x=0;x<GameDat->Game.GridSize;x++){
         for(int y=0;y<GameDat->Game.GridSize;y++){
             Grid[x][y]=GameDat->Game.History[GameDat->Game.Actual].Grid[x][y];
@@ -39,7 +37,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
       find=1;
       end=2;
     }
-  //hledani vlevo
+  //prepis vlevo
     if(i>1){
         if(Grid[i-1][j]==find){
             Grid[i-1][j]=end;
@@ -160,7 +158,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
             Grid[i-1][j+1]=end;
             tmpj=j+2;
             tmpi=i-2;
-            while((tmpj<size) or (tmpi>=0)){
+            while((tmpj<size) and (tmpi>=0)){
                 if(Grid[tmpi][tmpj]==end){
                     for(int x=0;x<GameDat->Game.GridSize;x++){
                         for(int y=0;y<GameDat->Game.GridSize;y++){
@@ -191,7 +189,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
             Grid[i+1][j+1]=end;
             tmpj=j+2;
             tmpi=i+2;
-            while((tmpj<size) or (tmpi<size)){
+            while((tmpj<size) and (tmpi<size)){
                 if(Grid[tmpi][tmpj]==end){
                     for(int x=0;x<GameDat->Game.GridSize;x++){
                         for(int y=0;y<GameDat->Game.GridSize;y++){
@@ -222,7 +220,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
             Grid[i-1][j-1]=end;
             tmpj=j-2;
             tmpi=i-2;
-            while((tmpj>=0) or (tmpi>=0)){
+            while((tmpj>=0) and (tmpi>=0)){
                 if(Grid[tmpi][tmpj]==end){
                     for(int x=0;x<GameDat->Game.GridSize;x++){
                         for(int y=0;y<GameDat->Game.GridSize;y++){
@@ -253,7 +251,7 @@ GameData * GameLogic::Move(GameData *GameDat, int i, int j){
             Grid[i+1][j-1]=end;
             tmpj=j-2;
             tmpi=i+2;
-            while((tmpj>=0) or (tmpi<size)){
+            while((tmpj>=0) and (tmpi<size)){
                 if(Grid[tmpi][tmpj]==end){
                     for(int x=0;x<GameDat->Game.GridSize;x++){
                         for(int y=0;y<GameDat->Game.GridSize;y++){
@@ -391,7 +389,7 @@ bool GameLogic::SolveMove(int Grid[12][12], int i, int j,int size,int player)
         if(Grid[i-1][j+1]==find){
             tmpj=j+2;
             tmpi=i-2;
-            while((tmpj<size) or (tmpi>=0)){
+            while((tmpj<size) and (tmpi>=0)){
                 if(Grid[tmpi][tmpj]==end){
                     return true;
                 }else{
@@ -410,7 +408,7 @@ bool GameLogic::SolveMove(int Grid[12][12], int i, int j,int size,int player)
         if(Grid[i+1][j+1]==find){
             tmpj=j+2;
             tmpi=i+2;
-            while((tmpj<size) or (tmpi<size)){
+            while((tmpj<size) and (tmpi<size)){
                 if(Grid[tmpi][tmpj]==end){
                     return true;
                 }else{
@@ -429,7 +427,7 @@ bool GameLogic::SolveMove(int Grid[12][12], int i, int j,int size,int player)
         if(Grid[i-1][j-1]==find){
             tmpj=j-2;
             tmpi=i-2;
-            while((tmpj>=0) or (tmpi>=0)){
+            while((tmpj>=0) and (tmpi>=0)){
                 if(Grid[tmpi][tmpj]==end){
                     return true;
                 }else{
@@ -448,7 +446,7 @@ bool GameLogic::SolveMove(int Grid[12][12], int i, int j,int size,int player)
         if(Grid[i+1][j-1]==find){
             tmpj=j-2;
             tmpi=i+2;
-            while((tmpj>=0) or (tmpi<size)){
+            while((tmpj>=0) and (tmpi<size)){
                 if(Grid[tmpi][tmpj]==end){
                     return true;
                 }else{

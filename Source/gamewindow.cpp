@@ -97,6 +97,7 @@ GameWindow::GameWindow(GameData *Gameparam,QMainWindow *parent)
     empty.addPixmap(pixelmap);
     pixelmap = GetImage(0,7);
     black.addPixmap(pixelmap);
+    isSaved=false;
     this->InitGame();
 }
 
@@ -106,10 +107,59 @@ GameWindow::~GameWindow()
 }
 
 void GameWindow::QuitButtonEvent(){
+    QMessageBox::StandardButton reply;
+      reply = QMessageBox::question(this, "Test", "Quit?",
+                                    QMessageBox::Yes|QMessageBox::No);
     this->close();
 }
 
+void GameWindow::SaveGameToFile(){
+    QString Filename = QFileDialog::getSaveFileName();
+    QFile file(Filename);
+         if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+             {
+             QTextStream outToFile(&file);
+             outToFile << QString::number(GameDat->Game.GridSize) << endl;
+             outToFile << QString::number(GameDat->Game.Actual) << endl;
+             outToFile << QString::number(GameDat->Game.Last) << endl;
+             outToFile << QString::number(GameDat->Game.Player1Score) << endl;
+             outToFile << QString::number(GameDat->Game.Player2Score) << endl;
+             outToFile << QString::number(GameDat->Game.RemainingStones) << endl;
+             outToFile << QString::number(GameDat->Game.ActivePlayer) << endl;
+             outToFile << QString::number(GameDat->Game.AIlevel) << endl;
+             if(GameDat->Game.OpponentIsHuman){
+                 outToFile << QString::number(1) << endl;
+             }else{
+                 outToFile << QString::number(0) << endl;
+             }
+             outToFile << *GameDat->Game.Player1Name << endl;
+             outToFile << *GameDat->Game.Player2Name << endl;
+             QString *outputGrid = new QString();
+             outputGrid->resize(2*GameDat->Game.GridSize);
+             outputGrid->clear();
+             int position=0;
+             for(int x=0;x<=GameDat->Game.Last;x++){
+                 for(int i=0;i<GameDat->Game.GridSize;i++){
+                     for(int j=0;j<GameDat->Game.GridSize;j++){
+                     outputGrid->insert(position,QChar(GameDat->Game.History[x].Grid[i][j]+48));
+                     position++;
+                     }
+                 }
+                outToFile << *outputGrid << endl;
+                position=0;
+                outputGrid->clear();
+             }
+             file.close();
+             isSaved=true;
+         }else{
+         QMessageBox::critical(this,"Error","Cannot open file","OK");
+         }
+
+    return;
+}
+
 void GameWindow::SaveButtonEvent(){
+    this->SaveGameToFile();
 
 }
 
@@ -292,19 +342,232 @@ void GameWindow::ButtonGridEvent(){
         for(int j=0;j<GameDat->Game.GridSize;j++){
             if( obj == GameGridButton[i][j] )
             {
-                 testlabel->setText(QString::number(i)+"  sloupec   "+ QString::number(j)+" radek ");
+                if(!DisableGrid[i][j]){
+                testlabel->setText(QString::number(i)+"  sloupec   "+ QString::number(j)+" radek ");
                  GameLogic *Logic = new GameLogic();
-                 if(Logic->SolveMove(GameDat->Game.History[GameDat->Game.Actual].Grid,i,j,GameDat->Game.GridSize,GameDat->Game.ActivePlayer)){
-                     GameDat = Logic->Move(GameDat,i,j);
-                     this->SwitchActivePlayer();
-                     this->SwitchActivePlayerFrame();
-                     GameDat = Logic->ReCountScore(GameDat);
-                     this->UpdateScore();
-                     this->RenderGrid();
-                     this->DissableButtonGrid();
+
+                 if(GameDat->Game.OpponentIsHuman){
+                     if(Logic->SolveMove(GameDat->Game.History[GameDat->Game.Actual].Grid,i,j,GameDat->Game.GridSize,GameDat->Game.ActivePlayer)){
+                         GameDat = Logic->Move(GameDat,i,j);
+                         this->SwitchActivePlayer();
+                         if(Logic->CanMove(GameDat)){
+                             this->SwitchActivePlayerFrame();
+                             GameDat = Logic->ReCountScore(GameDat);
+                             this->UpdateScore();
+                             this->RenderGrid();
+                             this->DissableButtonGrid();
+                         }else{
+                            InfoLabel->setText("You cant play. Opponent is on turn");
+                            this->SwitchActivePlayer();
+                            if(Logic->CanMove(GameDat)){
+                                this->SwitchActivePlayerFrame();
+                                GameDat = Logic->ReCountScore(GameDat);
+                                this->UpdateScore();
+                                this->RenderGrid();
+                                this->DissableButtonGrid();
+                            }else{
+                                QString *message= new QString("");
+                                message->resize(2000);
+                                message->clear();
+                                message->append("Player ");
+                                if(GameDat->Game.Player1Score>GameDat->Game.Player2Score){
+                                    message->append(*GameDat->Game.Player1Name);
+                                    message->append(" Win.\n");
+                                    message->append("Score : ");
+                                    message->append(*GameDat->Game.Player1Name);
+                                    message->append(" - ");
+                                    message->append(QString::number(GameDat->Game.Player1Score));
+                                    message->append(" : ");
+                                    message->append(QString::number(GameDat->Game.Player2Score));
+                                    message->append(" - ");
+                                    message->append(*GameDat->Game.Player2Name);
+                                }else{
+                                    message->append(*GameDat->Game.Player2Name);
+                                    message->append(" Win.\n");
+                                    message->append("Score : ");
+                                    message->append(*GameDat->Game.Player1Name);
+                                    message->append(" - ");
+                                    message->append(QString::number(GameDat->Game.Player1Score));
+                                    message->append(" : ");
+                                    message->append(QString::number(GameDat->Game.Player2Score));
+                                    message->append(" - ");
+                                    message->append(*GameDat->Game.Player2Name);
+                                }
+                                QMessageBox::information(this,"Win !!!!",*message,"OK");
+
+                                this->close();
+                            }
+                         }
+                         isSaved=false;
+                         if(GameDat->Game.RemainingStones==0){
+                             QString *message= new QString("");
+                             message->resize(2000);
+                             message->clear();
+                             message->append("Player ");
+                             if(GameDat->Game.Player1Score>GameDat->Game.Player2Score){
+                                message->append(*GameDat->Game.Player1Name);
+                                message->append(" Win.\n");
+                                message->append("Score : ");
+                                message->append(*GameDat->Game.Player1Name);
+                                message->append(" - ");
+                                message->append(QString::number(GameDat->Game.Player1Score));
+                                message->append(" : ");
+                                message->append(QString::number(GameDat->Game.Player2Score));
+                                message->append(" - ");
+                                message->append(*GameDat->Game.Player2Name);
+                             }else{
+                                 message->append(*GameDat->Game.Player2Name);
+                                 message->append(" Win.\n");
+                                 message->append("Score : ");
+                                 message->append(*GameDat->Game.Player1Name);
+                                 message->append(" - ");
+                                 message->append(QString::number(GameDat->Game.Player1Score));
+                                 message->append(" : ");
+                                 message->append(QString::number(GameDat->Game.Player2Score));
+                                 message->append(" - ");
+                                 message->append(*GameDat->Game.Player2Name);
+                             }
+                             QMessageBox::information(this,"Win !!!!",*message,"OK");
+                             this->close();
+                         }
+                     }else{
+                         InfoLabel->setText("Thats not valid move...");
+                     }
                  }else{
-                     InfoLabel->setText("Thats not valid move...");
+                     if(Logic->SolveMove(GameDat->Game.History[GameDat->Game.Actual].Grid,i,j,GameDat->Game.GridSize,GameDat->Game.ActivePlayer)){
+                         GameDat = Logic->Move(GameDat,i,j);
+                         this->SwitchActivePlayer();
+                         if(Logic->CanMove(GameDat)){
+                             this->SwitchActivePlayerFrame();
+                             GameDat = Logic->ReCountScore(GameDat);
+                             this->UpdateScore();
+                             this->RenderGrid();
+                             this->DissableButtonGrid();
+
+                             QThread::msleep(400);
+                             GameInteligence *AI = new GameInteligence();
+                             GameDat = AI->SwitchInteligence(GameDat);
+                             QThread::msleep(400);
+                             this->SwitchActivePlayer();
+                             this->SwitchActivePlayerFrame();
+                             GameDat = Logic->ReCountScore(GameDat);
+                             this->UpdateScore();
+                             this->RenderGrid();
+                             this->DissableButtonGrid();
+                             if(!Logic->CanMove(GameDat)){
+                                 QString *message= new QString("");
+                                 message->resize(2000);
+                                 message->clear();
+                                 message->append("Player ");
+                                 if(GameDat->Game.Player1Score>GameDat->Game.Player2Score){
+                                     message->append(*GameDat->Game.Player1Name);
+                                     message->append(" Win.\n");
+                                     message->append("Score : ");
+                                     message->append(*GameDat->Game.Player1Name);
+                                     message->append(" - ");
+                                     message->append(QString::number(GameDat->Game.Player1Score));
+                                     message->append(" : ");
+                                     message->append(QString::number(GameDat->Game.Player2Score));
+                                     message->append(" - ");
+                                     message->append(*GameDat->Game.Player2Name);
+                                 }else{
+                                     message->append(*GameDat->Game.Player2Name);
+                                     message->append(" Win.\n");
+                                     message->append("Score : ");
+                                     message->append(*GameDat->Game.Player1Name);
+                                     message->append(" - ");
+                                     message->append(QString::number(GameDat->Game.Player1Score));
+                                     message->append(" : ");
+                                     message->append(QString::number(GameDat->Game.Player2Score));
+                                     message->append(" - ");
+                                     message->append(*GameDat->Game.Player2Name);
+                                 }
+                                 QMessageBox::information(this,"Win !!!!",*message,"OK");
+
+                                 this->close();
+                             }
+
+                         }else{
+                            InfoLabel->setText("You cant play. Opponent is on turn");
+                            this->SwitchActivePlayer();
+                            if(Logic->CanMove(GameDat)){
+                                this->SwitchActivePlayerFrame();
+                                GameDat = Logic->ReCountScore(GameDat);
+                                this->UpdateScore();
+                                this->RenderGrid();
+                                this->DissableButtonGrid();
+                            }else{
+                                QString *message= new QString("");
+                                message->resize(2000);
+                                message->clear();
+                                message->append("Player ");
+                                if(GameDat->Game.Player1Score>GameDat->Game.Player2Score){
+                                    message->append(*GameDat->Game.Player1Name);
+                                    message->append(" Win.\n");
+                                    message->append("Score : ");
+                                    message->append(*GameDat->Game.Player1Name);
+                                    message->append(" - ");
+                                    message->append(QString::number(GameDat->Game.Player1Score));
+                                    message->append(" : ");
+                                    message->append(QString::number(GameDat->Game.Player2Score));
+                                    message->append(" - ");
+                                    message->append(*GameDat->Game.Player2Name);
+                                }else{
+                                    message->append(*GameDat->Game.Player2Name);
+                                    message->append(" Win.\n");
+                                    message->append("Score : ");
+                                    message->append(*GameDat->Game.Player1Name);
+                                    message->append(" - ");
+                                    message->append(QString::number(GameDat->Game.Player1Score));
+                                    message->append(" : ");
+                                    message->append(QString::number(GameDat->Game.Player2Score));
+                                    message->append(" - ");
+                                    message->append(*GameDat->Game.Player2Name);
+                                }
+                                QMessageBox::information(this,"Win !!!!",*message,"OK");
+
+                                this->close();
+                            }
+                         }
+                         isSaved=false;
+                         if(GameDat->Game.RemainingStones==0){
+                             QString *message= new QString("");
+                             message->resize(2000);
+                             message->clear();
+                             message->append("Player ");
+                             if(GameDat->Game.Player1Score>GameDat->Game.Player2Score){
+                                message->append(*GameDat->Game.Player1Name);
+                                message->append(" Win.\n");
+                                message->append("Score : ");
+                                message->append(*GameDat->Game.Player1Name);
+                                message->append(" - ");
+                                message->append(QString::number(GameDat->Game.Player1Score));
+                                message->append(" : ");
+                                message->append(QString::number(GameDat->Game.Player2Score));
+                                message->append(" - ");
+                                message->append(*GameDat->Game.Player2Name);
+                             }else{
+                                 message->append(*GameDat->Game.Player2Name);
+                                 message->append(" Win.\n");
+                                 message->append("Score : ");
+                                 message->append(*GameDat->Game.Player1Name);
+                                 message->append(" - ");
+                                 message->append(QString::number(GameDat->Game.Player1Score));
+                                 message->append(" : ");
+                                 message->append(QString::number(GameDat->Game.Player2Score));
+                                 message->append(" - ");
+                                 message->append(*GameDat->Game.Player2Name);
+                             }
+                             QMessageBox::information(this,"Win !!!!",*message,"OK");
+                             this->close();
+                         }
+
+                         isSaved=false;
+                     }else{
+                         InfoLabel->setText("Thats not valid move...");
+                     }
                  }
+                }
             }
         }
     }
@@ -314,9 +577,9 @@ void GameWindow::DissableButtonGrid(){
     for(int i=0;i<GameDat->Game.GridSize;i++){
         for(int j=0;j<GameDat->Game.GridSize;j++){
             if(GameDat->Game.History[GameDat->Game.Actual].Grid[i][j]!=0){
-                GameGridButton[i][j]->setEnabled(false);
+                DisableGrid[i][j]=true;
             }else{
-                GameGridButton[i][j]->setEnabled(true);
+                DisableGrid[i][j]=false;;
             }
         }
     }

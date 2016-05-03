@@ -2,8 +2,6 @@
 #define GAMELOGIC_H
 
 #include "./Headers/gamedata.h"
-#include "algorithm"
-
 
 class GameLogic
 {
@@ -13,7 +11,6 @@ public:
     bool CanMove(GameData *GameDat);
     GameData *ReCountScore(GameData *GameDat);
     bool SolveMove(int Grid[12][12], int i, int j, int size, int player);
-
 private:
 
 

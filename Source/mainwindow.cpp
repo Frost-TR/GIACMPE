@@ -17,8 +17,16 @@ MainWindow::MainWindow(QWidget *parent)
     NewGameLabel = new QLabel("NewGameLabel",this);
     NewGameLabel->setText("New Game");
     NewGameLabel->setFont(font);
+    NewGameLabel->setAlignment(Qt::AlignCenter);
     NewGameLabel->setVisible(false);
-    NewGameLabel->setGeometry(QRect(QPoint(100,50),QSize(300,70)));
+    NewGameLabel->setGeometry(QRect(QPoint(100,20),QSize(300,70)));
+
+    LoadGameLabel = new QLabel("LoadGameLabel",this);
+    LoadGameLabel->setText("Load Game");
+    LoadGameLabel->setFont(font);
+    LoadGameLabel->setAlignment(Qt::AlignCenter);
+    LoadGameLabel->setVisible(false);
+    LoadGameLabel->setGeometry(QRect(QPoint(100,20),QSize(300,70)));
 
     BoardSizeLabel = new QLabel("BoardSizeLabel",this);
     BoardSizeLabel->setText("Playing board size:");
@@ -45,6 +53,39 @@ MainWindow::MainWindow(QWidget *parent)
     OpponentDifficultLabel->setVisible(false);
     OpponentDifficultLabel->setGeometry(QRect(QPoint(100,220),QSize(100,20)));
 
+    NewGameInfoLabel = new QLabel("NewGameInfoLabel",this);
+    NewGameInfoLabel->setText("");
+    NewGameInfoLabel->setFont(font);
+    NewGameInfoLabel->setStyleSheet("color: red");
+    NewGameInfoLabel->setVisible(false);
+    NewGameInfoLabel->setAlignment(Qt::AlignCenter);
+    NewGameInfoLabel->setGeometry(QRect(QPoint(100,400),QSize(300,30)));
+
+    AuthorsLabel = new QLabel("AuthorsLabel",this);
+    AuthorsLabel->setText("Authors:");
+    AuthorsLabel->setFont(font);
+    AuthorsLabel->setVisible(false);
+    AuthorsLabel->setGeometry(QRect(QPoint(20,20),QSize(80,30)));
+
+    Author1NameLabel = new QLabel("Author1NameLabel",this);
+    Author1NameLabel->setText("Tomas Rys (xrysto00)");
+    Author1NameLabel->setVisible(false);
+    Author1NameLabel->setFont(font);
+    Author1NameLabel->setGeometry(QRect(QPoint(110,20),QSize(350,30)));
+
+    Author2NameLabel = new QLabel("Author2NameLabel",this);
+    Author2NameLabel->setText("Tadeas Kovar (xrysto00)");
+    Author2NameLabel->setVisible(false);
+    Author2NameLabel->setFont(font);
+    Author2NameLabel->setGeometry(QRect(QPoint(110,60),QSize(350,30)));
+
+    DescriptionLabel = new QLabel("DescriptionLabel",this);
+    DescriptionLabel->setText("This application is made for couse ICP on BUT FIT.");
+    DescriptionLabel->setVisible(false);
+    DescriptionLabel->setFont(font);
+    DescriptionLabel->setGeometry(QRect(QPoint(20,100),QSize(360,500)));
+    DescriptionLabel->setWordWrap(true);
+
     PlayerNameEdit = new QLineEdit(this);
     PlayerNameEdit->setVisible(false);
     PlayerNameEdit->setGeometry(QRect(QPoint(220,190),QSize(150,20)));
@@ -52,6 +93,17 @@ MainWindow::MainWindow(QWidget *parent)
     PlayerNameEdit2 = new QLineEdit(this);
     PlayerNameEdit2->setVisible(false);
     PlayerNameEdit2->setGeometry(QRect(QPoint(220,220),QSize(150,20)));
+
+    LoadGameInfoLabel = new QLabel("LoadGameInfoLabel",this);
+    LoadGameInfoLabel->setText("File:");
+    LoadGameInfoLabel->setVisible(false);
+    LoadGameInfoLabel->setFont(font);
+    LoadGameInfoLabel->setAlignment(Qt::AlignCenter);
+    LoadGameInfoLabel->setGeometry(QRect(QPoint(200,200),QSize(100,30)));
+
+    LoadFileEdit = new QLineEdit(this);
+    LoadFileEdit->setVisible(false);
+    LoadFileEdit->setGeometry(QRect(QPoint(50,250),QSize(400,20)));
 
     BoardSizeComboBox = new QComboBox(this);
     BoardSizeComboBox->setVisible(false);
@@ -65,9 +117,10 @@ MainWindow::MainWindow(QWidget *parent)
     OpponentDifficultComboBox = new QComboBox(this);
     OpponentDifficultComboBox->setVisible(false);
     OpponentDifficultComboBox->setGeometry(QRect(QPoint(220,220),QSize(100,20)));
+    OpponentDifficultComboBox->addItem("Hard");
+    OpponentDifficultComboBox->addItem("Medium");
     OpponentDifficultComboBox->addItem("Stupid");
-    OpponentDifficultComboBox->addItem("Very Stupid");
-    OpponentDifficultComboBox->setCurrentIndex(0);
+    OpponentDifficultComboBox->setCurrentIndex(1);
 
     HumanRadioButton = new QRadioButton("HumanRadioButton",this);
     HumanRadioButton->setVisible(false);
@@ -124,11 +177,11 @@ MainWindow::MainWindow(QWidget *parent)
     LoadGameButton->setGeometry(QRect(QPoint(100, 360),
                                  QSize(300, 70)));
 
-    DeleteGameButton= new QPushButton("DeleteGameButton",this);
-    DeleteGameButton->setText("Delete");
-    DeleteGameButton->setVisible(false);
-    DeleteGameButton->setFont(font);
-    DeleteGameButton->setGeometry(QRect(QPoint(100, 440),
+    ChooseGameButton= new QPushButton("ChooseGameButton",this);
+    ChooseGameButton->setText("Choose file");
+    ChooseGameButton->setVisible(false);
+    ChooseGameButton->setFont(font);
+    ChooseGameButton->setGeometry(QRect(QPoint(100, 440),
                                  QSize(300, 70)));
 
     QObject::connect(ExitGameButton,SIGNAL(clicked(bool)),this,SLOT(close()));
@@ -139,6 +192,9 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(HumanRadioButton,SIGNAL(clicked(bool)),this,SLOT(SetLayoutForOpponent()));
     QObject::connect(AIRadioButton,SIGNAL(clicked(bool)),this,SLOT(SetLayoutForOpponent()));
     QObject::connect(PlayGameButton,SIGNAL(clicked(bool)),this,SLOT(showGameWindow()));
+    QObject::connect(ChooseGameButton,SIGNAL(clicked(bool)),this,SLOT(GetFileName()));
+    QObject::connect(LoadGameButton,SIGNAL(clicked(bool)),this,SLOT(LoadGame()));
+
 }
 
 MainWindow::~MainWindow()
@@ -146,12 +202,88 @@ MainWindow::~MainWindow()
 
 }
 
-
-void MainWindow::showGameWindow(){
-    NewGameWindow = new GameWindow(this->createNewGame());
+void MainWindow::LoadGame(){
+    QFile file(LoadFileEdit->text());
+    QTextStream in(&file);
+    GameData *loadGame = new GameData();
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QString line = in.readLine();
+        loadGame->Game.GridSize=line.toInt();
+        line = in.readLine();
+        loadGame->Game.Actual=line.toInt();
+        line = in.readLine();
+        loadGame->Game.Last=line.toInt();
+        line = in.readLine();
+        loadGame->Game.Player1Score=line.toInt();
+        line = in.readLine();
+        loadGame->Game.Player2Score=line.toInt();
+        line = in.readLine();
+        loadGame->Game.RemainingStones=line.toInt();
+        line = in.readLine();
+        loadGame->Game.ActivePlayer=line.toInt();
+        line = in.readLine();
+        loadGame->Game.AIlevel=line.toInt();
+        line = in.readLine();
+        if(line.toInt()==0){
+           loadGame->Game.OpponentIsHuman=false;
+        }else{
+           loadGame->Game.OpponentIsHuman=true;
+        }
+        line = in.readLine();
+        loadGame->Game.Player1Name= new QString(line);
+        line = in.readLine();
+        loadGame->Game.Player2Name= new QString(line);
+        int position=0;
+        for(int x=0;x<=loadGame->Game.Last;x++){
+           line = in.readLine();
+           for(int i=0;i<loadGame->Game.GridSize;i++){
+               for(int j=0;j<loadGame->Game.GridSize;j++){
+                   QChar key=line.at(position);
+                   loadGame->Game.History[x].Grid[i][j]=key.toLatin1()-48;
+                   position++;
+               }
+           }
+           position=0;
+        }
+    NewGameWindow = new GameWindow(loadGame);
     NewGameWindow->setFixedSize(1100,800);
+    NewGameWindow->setWindowTitle("Loaded Game");
     NewGameWindow->show();
     this->setLayoutToMenu();
+    }else{
+        QMessageBox::critical(this,"Error","Cannot open file","OK");
+    }
+    file.close();
+
+}
+
+void MainWindow::GetFileName(){
+    QString FileName = QFileDialog::getOpenFileName();
+    LoadFileEdit->setText(FileName);
+}
+
+void MainWindow::showGameWindow(){
+    if(!PlayerNameEdit->text().isEmpty()){
+        if(HumanRadioButton->isChecked()){
+            if(!PlayerNameEdit2->text().isEmpty()){
+                NewGameWindow = new GameWindow(this->createNewGame());
+                NewGameWindow->setFixedSize(1100,800);
+                NewGameWindow->setWindowTitle("New Game");
+                NewGameWindow->show();
+                this->setLayoutToMenu();
+            }else{
+                NewGameInfoLabel->setText("Fill player 2 name!!");
+            }
+        }else{
+            NewGameWindow = new GameWindow(this->createNewGame());
+            NewGameWindow->setFixedSize(1100,800);
+            NewGameWindow->setWindowTitle("New Game");
+            NewGameWindow->show();
+            this->setLayoutToMenu();
+        }
+    }else{
+        NewGameInfoLabel->setText("Fill player 1 name!!");
+    }
 }
 
 
@@ -174,11 +306,23 @@ GameData* MainWindow::createNewGame(){
     newGame->Game.Player1Name = new QString(PlayerNameEdit->text());
     if(AIRadioButton->isChecked()){
     newGame->Game.OpponentIsHuman = false;
-    newGame->Game.Player2Name = new QString("Artificial Inteligence");
+    switch(OpponentDifficultComboBox->currentIndex()){
+    case 0:
+        newGame->Game.Player2Name = new QString("AI (Hard)");
+        break;
+    case 1:
+        newGame->Game.Player2Name = new QString("AI (Medium)");
+        break;
+    case 2:
+        newGame->Game.Player2Name = new QString("AI (Stupid)");
+        break;
+
+    }
     newGame->Game.AIlevel = OpponentDifficultComboBox->currentIndex();
     }else{
     newGame->Game.OpponentIsHuman = true;
     newGame->Game.Player2Name= new QString(PlayerNameEdit2->text());
+    newGame->Game.AIlevel = 10;
     }
     newGame->Game.Actual=0;
     newGame->Game.Last=0;
@@ -235,9 +379,10 @@ void MainWindow::SetLayoutToNewGame(){
     AIRadioButton->setVisible(true);
     PlayerNameLabel->setVisible(true);
     PlayerNameEdit->setVisible(true);
+    NewGameInfoLabel->setVisible(true);
 
     BoardSizeComboBox->setCurrentIndex(1);
-    OpponentDifficultComboBox->setCurrentIndex(0);
+    OpponentDifficultComboBox->setCurrentIndex(1);
 
     HumanRadioButton->setChecked(false);
     AIRadioButton->setChecked(true);
@@ -251,10 +396,13 @@ void MainWindow::SetLayoutToLoadGame(){
     LoadButton->setVisible(false);
     AboutGameButton->setVisible(false);
     ExitGameButton->setVisible(false);
-    DeleteGameButton->setVisible(true);
+    ChooseGameButton->setVisible(true);
     LoadGameButton->setVisible(true);
     BackButton->setVisible(true);
     MenuLabel->setVisible(false);
+    LoadGameLabel->setVisible(true);
+    LoadGameInfoLabel->setVisible(true);
+    LoadFileEdit->setVisible(true);
 
 }
 
@@ -266,6 +414,10 @@ void MainWindow::SetLayoutToAboutGame(){
     ExitGameButton->setVisible(false);
     BackButton->setVisible(true);
     MenuLabel->setVisible(false);
+    AuthorsLabel->setVisible(true);
+    Author1NameLabel->setVisible(true);
+    Author2NameLabel->setVisible(true);
+    DescriptionLabel->setVisible(true);
 
 }
 
@@ -293,16 +445,24 @@ void MainWindow::setLayoutToMenu(){
         OpponentDifficultComboBox->setVisible(false);
         PlayerNameEdit->setText("");
         PlayerNameEdit2->setText("");
+        NewGameInfoLabel->setText("");
+        NewGameInfoLabel->setVisible(false);
 
         actualLayout=0;
         break;
     case 2:
         LoadGameButton->setVisible(false);
-        DeleteGameButton->setVisible(false);
-
+        ChooseGameButton->setVisible(false);
+        LoadGameLabel->setVisible(false);
+        LoadGameInfoLabel->setVisible(false);
+        LoadFileEdit->setVisible(false);
         actualLayout=0;
         break;
     case 3:
+        AuthorsLabel->setVisible(false);
+        Author1NameLabel->setVisible(false);
+        Author2NameLabel->setVisible(false);
+        DescriptionLabel->setVisible(false);
         actualLayout=0;
         break;
     }
