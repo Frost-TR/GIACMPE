@@ -9,8 +9,6 @@ GameWindow::GameWindow(GameData *Gameparam,QMainWindow *parent)
     : QMainWindow(parent)
 {
     GameDat = Gameparam;
-    testlabel= new QLabel(this);
-    testlabel->setGeometry(QRect(QPoint(10,10),QSize(200,30)));
 
     Spacer = new QLabel(this);
     Spacer->setGeometry(QRect(QPoint(800,0),QSize(10,800)));
@@ -108,9 +106,11 @@ GameWindow::~GameWindow()
 
 void GameWindow::QuitButtonEvent(){
     QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(this, "Test", "Quit?",
+      reply = QMessageBox::question(this, "Quit?", "Quit?",
                                     QMessageBox::Yes|QMessageBox::No);
-    this->close();
+    if(reply==QMessageBox::Yes){
+     this->close();
+    }
 }
 
 void GameWindow::SaveGameToFile(){
@@ -343,7 +343,6 @@ void GameWindow::ButtonGridEvent(){
             if( obj == GameGridButton[i][j] )
             {
                 if(!DisableGrid[i][j]){
-                testlabel->setText(QString::number(i)+"  sloupec   "+ QString::number(j)+" radek ");
                  GameLogic *Logic = new GameLogic();
 
                  if(GameDat->Game.OpponentIsHuman){
@@ -356,6 +355,7 @@ void GameWindow::ButtonGridEvent(){
                              this->UpdateScore();
                              this->RenderGrid();
                              this->DissableButtonGrid();
+                             this->repaint();
                          }else{
                             InfoLabel->setText("You cant play. Opponent is on turn");
                             this->SwitchActivePlayer();
@@ -365,6 +365,7 @@ void GameWindow::ButtonGridEvent(){
                                 this->UpdateScore();
                                 this->RenderGrid();
                                 this->DissableButtonGrid();
+                                this->repaint();
                             }else{
                                 QString *message= new QString("");
                                 message->resize(2000);
@@ -443,17 +444,18 @@ void GameWindow::ButtonGridEvent(){
                              this->UpdateScore();
                              this->RenderGrid();
                              this->DissableButtonGrid();
-
-                             QThread::msleep(400);
+                             this->repaint();
+                             QThread::msleep(300);
                              GameInteligence *AI = new GameInteligence();
                              GameDat = AI->SwitchInteligence(GameDat);
-                             QThread::msleep(400);
+                             QThread::msleep(300);
                              this->SwitchActivePlayer();
                              this->SwitchActivePlayerFrame();
                              GameDat = Logic->ReCountScore(GameDat);
                              this->UpdateScore();
                              this->RenderGrid();
                              this->DissableButtonGrid();
+                             this->repaint();
                              if(!Logic->CanMove(GameDat)){
                                  QString *message= new QString("");
                                  message->resize(2000);
@@ -496,6 +498,7 @@ void GameWindow::ButtonGridEvent(){
                                 this->UpdateScore();
                                 this->RenderGrid();
                                 this->DissableButtonGrid();
+                                this->repaint();
                             }else{
                                 QString *message= new QString("");
                                 message->resize(2000);

@@ -44,7 +44,6 @@ private slots:
 
 
 private:
-    QLabel *testlabel;
     QPushButton *GameGridButton[12][12];
     QPushButton *UndoButton;
     QPushButton *RedoButton;
