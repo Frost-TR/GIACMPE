@@ -1,6 +1,11 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
+/**
+ * @file   gamewindow.h
+ * @author Rys Tomáš, Tadeáš Kovář
+ */
+
 #include <QObject>
 #include <QMainWindow>
 #include <QLabel>
@@ -16,6 +21,9 @@
 #include "./Headers/gamelogic.h"
 #include "./Headers/gameinteligence.h"
 
+/**
+ * @brief The GameWindow class Třída obsahující herni okno a práci s ním.
+ */
 class GameWindow : public QMainWindow
 {
     Q_OBJECT
@@ -34,6 +42,7 @@ public:
     void SwitchActivePlayerFrame();
     void DissableButtonGrid();
     void SaveGameToFile();
+    void WinMessage();
 
 private slots:
     void ButtonGridEvent();

@@ -1,8 +1,17 @@
+/**
+ * @file   gamelogic.h
+ * @author Rys Tomáš, Tadeáš Kovář
+ */
+
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
 
 #include "./Headers/gamedata.h"
 
+
+/**
+ * @brief The GameLogic class Třída řešící herní logiku.
+ */
 class GameLogic
 {
 public:

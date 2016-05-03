@@ -1,6 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+/**
+ * @file   mainwindow.h
+ * @author Rys Tomáš, Tadeáš Kovář
+ */
+
 #include <QObject>
 #include <QMainWindow>
 #include <QPushButton>
@@ -11,6 +16,10 @@
 
 #include "./Headers/gamewindow.h"
 #include "./Headers/gamedata.h"
+
+/**
+ * @brief The MainWindow class Třída obsahující herni menu a práci s ním.
+ */
 
 class MainWindow : public QMainWindow
 {

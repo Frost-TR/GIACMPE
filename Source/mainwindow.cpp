@@ -1,5 +1,13 @@
+/**
+ * @file   mainwindow.cpp
+ * @author Rys Tomáš, Tadeáš Kovář
+ */
 #include "./Headers/mainwindow.h"
 
+/**
+ * @brief MainWindow::MainWindow Konstruktor třídy MainWindow pro vytvořeni herního menu.
+ * @param parent
+ */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -7,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     QFont font;
     font.setPointSize(16);
-
+    /** Vygenerovani objektu  QLabel QPushButton QLineEdit a jejich inicializace,
+     *  Pro toto generování nebyl využit žádný tookil, vše je řeseno dynamicky.
+     **/
     MenuLabel = new QLabel("MenuLabel",this);
     MenuLabel->setText("Hra 2016 - Reversi");
     MenuLabel->setFont(font);
@@ -184,6 +194,10 @@ MainWindow::MainWindow(QWidget *parent)
     ChooseGameButton->setGeometry(QRect(QPoint(100, 440),
                                  QSize(300, 70)));
 
+
+    /**
+     * @brief QObject::connect Propojení signálu se sloty.
+     */
     QObject::connect(ExitGameButton,SIGNAL(clicked(bool)),this,SLOT(close()));
     QObject::connect(NewGameButton,SIGNAL(clicked(bool)),this,SLOT(SetLayoutToNewGame()));
     QObject::connect(LoadButton,SIGNAL(clicked(bool)),this,SLOT(SetLayoutToLoadGame()));
@@ -196,12 +210,17 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(LoadGameButton,SIGNAL(clicked(bool)),this,SLOT(LoadGame()));
 
 }
-
+/**
+ * @brief MainWindow::~MainWindow Destruktor třídy MainWindow
+ */
 MainWindow::~MainWindow()
 {
 
 }
 
+/**
+ * @brief MainWindow::LoadGame Načtení hry po stisknutí požadovaného tlačítka
+ */
 void MainWindow::LoadGame(){
     QFile file(LoadFileEdit->text());
     QTextStream in(&file);
@@ -257,11 +276,17 @@ void MainWindow::LoadGame(){
 
 }
 
+/**
+ * @brief MainWindow::GetFileName Metoda získávajíci nazev souboru z FileDialogu
+ */
 void MainWindow::GetFileName(){
     QString FileName = QFileDialog::getOpenFileName();
     LoadFileEdit->setText(FileName);
 }
 
+/**
+ * @brief MainWindow::showGameWindow Metoda pro inicializaci nové hry a vytvoření okna pro hru
+ */
 void MainWindow::showGameWindow(){
     if(!PlayerNameEdit->text().isEmpty()){
         if(HumanRadioButton->isChecked()){
@@ -286,7 +311,10 @@ void MainWindow::showGameWindow(){
     }
 }
 
-
+/**
+ * @brief MainWindow::createNewGame Tato metoda inicializuje nouvou hru.
+ * @return Vrací herní strukturu
+ */
 GameData* MainWindow::createNewGame(){
     GameData *newGame = new GameData();
     switch(BoardSizeComboBox->currentIndex()){
@@ -347,6 +375,9 @@ GameData* MainWindow::createNewGame(){
 
 }
 
+/**
+ * @brief MainWindow::SetLayoutForOpponent Metoda upravuje UI podle zaškrknutého checkboxu
+ */
 void MainWindow::SetLayoutForOpponent(){
     if(AIRadioButton->isChecked()){
         OpponentDifficultLabel->setVisible(true);
@@ -362,6 +393,9 @@ void MainWindow::SetLayoutForOpponent(){
 
 }
 
+/**
+ * @brief MainWindow::SetLayoutToNewGame Metoda přepínajíci laynout pro vytvoření nové hry.
+ */
 void MainWindow::SetLayoutToNewGame(){
     actualLayout=1;
     NewGameButton->setVisible(false);
@@ -390,6 +424,9 @@ void MainWindow::SetLayoutToNewGame(){
     this->SetLayoutForOpponent();
 }
 
+/**
+ * @brief MainWindow::SetLayoutToLoadGame Metoda přepínající layout pro načtení hry ze souboru.
+ */
 void MainWindow::SetLayoutToLoadGame(){
     actualLayout=2;
     NewGameButton->setVisible(false);
@@ -405,7 +442,9 @@ void MainWindow::SetLayoutToLoadGame(){
     LoadFileEdit->setVisible(true);
 
 }
-
+/**
+ * @brief MainWindow::SetLayoutToAboutGame Metoda přepínajíci layout zobrazující informace o hře.
+ */
 void MainWindow::SetLayoutToAboutGame(){
     actualLayout=3;
     NewGameButton->setVisible(false);
@@ -421,6 +460,9 @@ void MainWindow::SetLayoutToAboutGame(){
 
 }
 
+/**
+ * @brief MainWindow::setLayoutToMenu Metoda přepínajíci layout na menu.
+ */
 void MainWindow::setLayoutToMenu(){
     NewGameButton->setVisible(true);
     LoadButton->setVisible(true);

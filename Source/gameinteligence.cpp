@@ -1,10 +1,24 @@
+/**
+ * @file   gameinteligence.cpp
+ * @author Rys Tomáš, Tadeáš Kovář
+ */
+
 #include "./Headers/gameinteligence.h"
 
+
+/**
+ * @brief GameInteligence::GameInteligence Konstruktor třídy. Nebyl využít
+ */
 GameInteligence::GameInteligence()
 {
 
 }
 
+/**
+ * @brief GameInteligence::SwitchInteligence Tato metoda určije jaká uroven inteligence ma být aplikována.
+ * @param GameDat Herni data
+ * @return Vraci herni data na které byla aplikována herní inteligence pro provedení tahu.
+ */
 GameData *GameInteligence::SwitchInteligence(GameData *GameDat)
 {
     switch(GameDat->Game.AIlevel){
@@ -21,6 +35,11 @@ GameData *GameInteligence::SwitchInteligence(GameData *GameDat)
     return GameDat;
 }
 
+/**
+ * @brief GameInteligence::Hard Metoda definující nejtěžší úroven herní inteligence.
+ * @param GameDat Herní data
+ * @return Vraci herni data na které byla aplikována herní inteligence pro provedení tahu.
+ */
 GameData *GameInteligence::Hard(GameData *GameDat)
 {
     struct ScoreArray Score[200];
@@ -71,6 +90,11 @@ GameData *GameInteligence::Hard(GameData *GameDat)
     return Logic->Move(GameDat,Score[pointerOfMax].i,Score[pointerOfMax].j);
 }
 
+/**
+ * @brief GameInteligence::Hard Metoda definující střední úroven herní inteligence.
+ * @param GameDat Herní data
+ * @return Vraci herni data na které byla aplikována herní inteligence pro provedení tahu.
+ */
 GameData *GameInteligence::Medium(GameData *GameDat)
 {
     struct ScoreArray Score[200];
@@ -112,7 +136,11 @@ GameData *GameInteligence::Medium(GameData *GameDat)
     GameDat->Game.Last=last;
     return Logic->Move(GameDat,Score[randomValue].i,Score[randomValue].j);
 }
-
+/**
+ * @brief GameInteligence::Hard Metoda definující trivialní úroven herní inteligence.
+ * @param GameDat Herní data
+ * @return Vraci herni data na které byla aplikována herní inteligence pro provedení tahu.
+ */
 GameData *GameInteligence::Stupid(GameData *GameDat)
 {
     struct ScoreArray Score[200];
