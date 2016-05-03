@@ -74,13 +74,13 @@ MainWindow::MainWindow(QWidget *parent)
     Author1NameLabel->setGeometry(QRect(QPoint(110,20),QSize(350,30)));
 
     Author2NameLabel = new QLabel("Author2NameLabel",this);
-    Author2NameLabel->setText("Tadeas Kovar (xrysto00)");
+    Author2NameLabel->setText("Tadeas Kovar (xkovar69)");
     Author2NameLabel->setVisible(false);
     Author2NameLabel->setFont(font);
     Author2NameLabel->setGeometry(QRect(QPoint(110,60),QSize(350,30)));
 
     DescriptionLabel = new QLabel("DescriptionLabel",this);
-    DescriptionLabel->setText("This application is made for couse ICP on BUT FIT.");
+    DescriptionLabel->setText("Board game Reversi. This application was developed as project to ICP(Seminář C++) in FIT VUT Brno by Tomáš Rys and Tadeáš Kovář.");
     DescriptionLabel->setVisible(false);
     DescriptionLabel->setFont(font);
     DescriptionLabel->setGeometry(QRect(QPoint(20,100),QSize(360,500)));
