@@ -323,8 +323,8 @@ void GameWindow::UpdateScore(){
 }
 
 /**
- * @brief GameWindow::RenderGrid This method render pictures to game grid formed as array of buttons. Data is
- * saved in game structure
+ * @brief GameWindow::RenderGrid Tato metoda vykresluje obrázky do herní sítě vytvořené jako pole tlačítek.Data jsou
+ * uložena v herní struktůře.
  */
 void GameWindow::RenderGrid(){
     for(int i=0;i<GameDat->Game.GridSize;i++){
@@ -343,7 +343,7 @@ void GameWindow::RenderGrid(){
 }
 
 /**
- * @brief GameWindow::CreateCorners This method create labels in corners of game hints
+ * @brief GameWindow::CreateCorners Tato metoda vytváří labely v rozích herní nápovědy
  */
 void GameWindow::CreateCorners()
 {
@@ -362,7 +362,7 @@ void GameWindow::CreateCorners()
 }
 
 /**
- * @brief GameWindow::CreateGameHints This Method create label who identifi row and cow of game grid, its around of game grid
+ * @brief GameWindow::CreateGameHints Tato metoda vytvoří label, který identifikuje řádek a sloupec hrací sítě kolem celé hrací sítě.
  */
 void GameWindow::CreateGameHints()
 {
@@ -390,7 +390,7 @@ void GameWindow::CreateGameHints()
 }
 
 /**
- * @brief GameWindow::CreateGameGrid This method create GameGrid - array of buttons
+ * @brief GameWindow::CreateGameGrid Tato metoda vytváří herní síť - pole tlačítek
  */
 void GameWindow::CreateGameGrid()
 {    
@@ -406,7 +406,7 @@ void GameWindow::CreateGameGrid()
 }
 
 /**
- * @brief GameWindow::WinMessage Tato metoda zobrazuje zpravu pro vítěze
+ * @brief GameWindow::WinMessage Tato metoda zobrazuje zpravu pro vítěze.
  */
 void GameWindow::WinMessage(){
     QString *message= new QString("");
@@ -443,7 +443,7 @@ void GameWindow::WinMessage(){
 
 /**
  * @brief GameWindow::ButtonGridEvent
- * This method react on Button click in game grid
+ * Tato metoda reáguje na stisk tlačítka v herní síti.
  *
  */
 void GameWindow::ButtonGridEvent(){
@@ -583,10 +583,10 @@ void GameWindow::DissableButtonGrid(){
 }
 
 /**
- * @brief GameWindow::GetImage This method return picture for defined by identifer and index
- * @param index index of picture
- * @param identyfi identifer of picture
- * @return picture in QPixmap
+ * @brief GameWindow::GetImage Tato metoda vrací obrázek definovaný identifikátorem a indexem.
+ * @param index index obrázku
+ * @param identyfi identifikátor obrázku
+ * @return obrázek v QPixmap
  */
 QPixmap GameWindow::GetImage(int index,int identyfi){
     QString file;
