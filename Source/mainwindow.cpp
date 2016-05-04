@@ -227,6 +227,11 @@ void MainWindow::LoadGame(){
     GameData *loadGame = new GameData();
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
         QString line = in.readLine();
+        if((QString::compare(line,"Hra2016-TTRK",Qt::CaseSensitive))!=0){
+           QMessageBox::critical(this,"Error","It isnt file with saved game...","OK");
+           return ;
+        }
+        line = in.readLine();
         loadGame->Game.GridSize=line.toInt();
         line = in.readLine();
         loadGame->Game.Actual=line.toInt();

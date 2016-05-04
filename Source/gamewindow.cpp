@@ -133,6 +133,7 @@ void GameWindow::SaveGameToFile(){
          if (file.open(QIODevice::WriteOnly | QIODevice::Text))
              {
              QTextStream outToFile(&file);
+             outToFile << "Hra2016-TTRK" << endl;
              outToFile << QString::number(GameDat->Game.GridSize) << endl;
              outToFile << QString::number(GameDat->Game.Actual) << endl;
              outToFile << QString::number(GameDat->Game.Last) << endl;
