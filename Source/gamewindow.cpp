@@ -186,6 +186,8 @@ void GameWindow::SaveButtonEvent(){
  */
 void GameWindow::UndoButtonEvent(){
     InfoLabel->setText("");
+    if(GameDat->Game.OpponentIsHuman){
+
     if(GameDat->Game.Actual>0){
         GameDat->Game.Actual--;
         this->SwitchActivePlayer();
@@ -195,8 +197,32 @@ void GameWindow::UndoButtonEvent(){
         this->UpdateScore();
         this->RenderGrid();
         this->DissableButtonGrid();
+        this->repaint();
     }else{
         InfoLabel->setText("Cannot do Undo");
+    }
+    }else{
+        if(GameDat->Game.Actual>0){
+            if(GameDat->Game.History[GameDat->Game.Actual].whoMove==1){
+                while(true){
+                    GameDat->Game.Actual--;
+                    if(GameDat->Game.History[GameDat->Game.Actual].whoMove==0){
+                        GameDat->Game.Actual--;
+                        GameDat->Game.ActivePlayer=0;
+                        break;
+                    }
+                }
+                this->SwitchActivePlayerFrame();
+                GameLogic *Logic = new GameLogic();
+                GameDat = Logic->ReCountScore(GameDat);
+                this->UpdateScore();
+                this->RenderGrid();
+                this->DissableButtonGrid();
+                this->repaint();
+            }
+        }else{
+            InfoLabel->setText("Cannot do Undo");
+        }
     }
 
 }
@@ -205,6 +231,7 @@ void GameWindow::UndoButtonEvent(){
  * @brief GameWindow::RedoButtonEvent Metoda reagující na stisk tlačítka redo.
  */
 void GameWindow::RedoButtonEvent(){
+    if(GameDat->Game.OpponentIsHuman){
     InfoLabel->setText("");
     if(GameDat->Game.Actual<GameDat->Game.Last){
         GameDat->Game.Actual++;
@@ -215,8 +242,32 @@ void GameWindow::RedoButtonEvent(){
         this->UpdateScore();
         this->RenderGrid();
         this->DissableButtonGrid();
+        this->repaint();
     }else{
         InfoLabel->setText("Cannot do Redo");
+    }
+    }else{
+        if(GameDat->Game.Actual<GameDat->Game.Last){
+            if(GameDat->Game.History[GameDat->Game.Actual].whoMove==1){
+                while(true){
+                    GameDat->Game.Actual++;
+                    if(GameDat->Game.History[GameDat->Game.Actual].whoMove==0){
+                        GameDat->Game.ActivePlayer=0;
+                        GameDat->Game.Actual++;
+                        break;
+                    }
+                }
+                this->SwitchActivePlayerFrame();
+                GameLogic *Logic = new GameLogic();
+                GameDat = Logic->ReCountScore(GameDat);
+                this->UpdateScore();
+                this->RenderGrid();
+                this->DissableButtonGrid();
+                this->repaint();
+            }
+        }else{
+            InfoLabel->setText("Cannot do Redo");
+        }
     }
 
 }

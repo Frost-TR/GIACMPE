@@ -368,6 +368,7 @@ GameData* MainWindow::createNewGame(){
             newGame->Game.History[0].Grid[i][j]=0;
         }
     }
+    newGame->Game.History[0].whoMove=1;
     int halfsize=newGame->Game.GridSize/2;
 
     newGame->Game.History[0].Grid[halfsize-1][halfsize-1]=1;
