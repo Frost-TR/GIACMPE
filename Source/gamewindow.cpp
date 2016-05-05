@@ -231,8 +231,8 @@ void GameWindow::UndoButtonEvent(){
  * @brief GameWindow::RedoButtonEvent Metoda reagující na stisk tlačítka redo.
  */
 void GameWindow::RedoButtonEvent(){
-    if(GameDat->Game.OpponentIsHuman){
     InfoLabel->setText("");
+    if(GameDat->Game.OpponentIsHuman){
     if(GameDat->Game.Actual<GameDat->Game.Last){
         GameDat->Game.Actual++;
         this->SwitchActivePlayer();
@@ -531,7 +531,7 @@ void GameWindow::ButtonGridEvent(){
                                         this->DissableButtonGrid();
                                         this->repaint();
                                     }else{
-                                        //this->WinMessage();
+                                        this->WinMessage();
                                         break;
                                     }
 
